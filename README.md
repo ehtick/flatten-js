@@ -1,7 +1,6 @@
 [![npm version](https://badge.fury.io/js/%40flatten-js%2Fcore.svg)](https://badge.fury.io/js/%40flatten-js%2Fcore)
 [![Coverage Status](https://coveralls.io/repos/github/alexbol99/flatten-js/badge.svg?branch=master)](https://coveralls.io/github/alexbol99/flatten-js?branch=master)
 [![](https://data.jsdelivr.com/v1/package/npm/@flatten-js/core/badge)](https://www.jsdelivr.com/package/npm/@flatten-js/core)
-[![@flatten-js/core](https://snyk.io/advisor/npm-package/@flatten-js/core/badge.svg)](https://snyk.io/advisor/npm-package/@flatten-js/core)
 
 # Javascript library for 2d geometry
 
