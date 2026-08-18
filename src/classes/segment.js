@@ -228,6 +228,11 @@ export class Segment extends Shape {
             return [dist, shortest_segment];
         }
 
+        if (shape instanceof Flatten.Box) {
+            let [dist, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
+            return [dist, shortest_segment];
+        }
+
         if (shape instanceof Flatten.Polygon) {
             let [dist, shortest_segment] = Flatten.Distance.shape2polygon(this, shape);
             return [dist, shortest_segment];
