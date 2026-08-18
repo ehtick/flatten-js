@@ -117,7 +117,7 @@ declare namespace Flatten {
         counterClockwise: boolean;
 
         // members
-        ps: Point;
+        pc: Point;
         r: number;
         startAngle: number;
         endAngle: number;
@@ -632,6 +632,7 @@ declare namespace Flatten {
 
     function point(x?: number, y?: number): Point;
     function point(arr?: [number, number]): Point;
+    function box(xmin: number, ymin: number, xmax: number, ymax: number) : Box
     function circle(pc: Point, r: number) : Circle;
     function line(pt?: Point, norm?: Vector) : Line;
     function line(norm?: Vector, pt?: Point) : Line;
