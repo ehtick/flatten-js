@@ -1158,6 +1158,13 @@ describe('#Flatten.Polygon', function() {
             expect(ip.length).to.equal(2);
         });
     });
+    it('Can measure distance between polygon and box', function () {
+        const polygon = new Polygon(new Box(3, 0, 4, 1));
+        const [dist, shortest_segment] = polygon.distanceTo(new Box(0, 0, 1, 1));
+
+        expect(dist).to.equal(2);
+        expect(shortest_segment).to.deep.equal({ps: {x: 3, y: 0}, pe: {x: 1, y: 0}});
+    });
     describe('#SVG output', function () {
         it('Can create path element', function () {
             const poly = new Polygon(

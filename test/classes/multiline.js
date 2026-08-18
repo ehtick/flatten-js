@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import Flatten, {line, ray, point, segment, vector, Point} from '../../index';
+import Flatten, {line, ray, point, segment, vector, Point, Box} from '../../index';
 import {Errors} from "../../src/utils/errors";
 
 describe('#Flatten.Multiline', function() {
@@ -239,6 +239,20 @@ describe('#Flatten.Multiline', function() {
         let str = JSON.stringify(ml);
 
         expect(str).not.to.be.empty;
+    });
+    it('Can measure distance between multiline and box', function () {
+        const ml = new Flatten.Multiline([segment(point(3, 0.5), point(4, 0.5))]);
+        const [dist, shortest_segment] = ml.distanceTo(new Box(0, 0, 1, 1));
+
+        expect(dist).to.equal(2);
+        expect(shortest_segment).to.deep.equal({ps: {x: 3, y: 0.5}, pe: {x: 1, y: 0.5}});
+    });
+    it('Can measure distance between multiline and point', function () {
+        const ml = new Flatten.Multiline([segment(point(3, 0.5), point(4, 0.5))]);
+        const [dist, shortest_segment] = ml.distanceTo(point(0, 0.5));
+
+        expect(dist).to.equal(3);
+        expect(shortest_segment).to.deep.equal({ps: {x: 3, y: 0.5}, pe: {x: 0, y: 0.5}});
     });
     it('May create svg path', function() {
         let shapes = [

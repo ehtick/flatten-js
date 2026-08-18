@@ -198,7 +198,7 @@ export class Segment extends Shape {
 
     /**
      * Calculate distance and shortest segment from segment to shape and return as array [distance, shortest segment]
-     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
      * @returns {[number, Segment]} shortest segment between segment and shape (started at segment, ended at shape)
      */
     distanceTo(shape) {

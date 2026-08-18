@@ -184,7 +184,7 @@ declare namespace Flatten {
         not_intersect(box: Box): boolean;
         intersect(box: Box): boolean;
         contains(shape: AnyShape): boolean;
-        distanceTo(shape: AnyShape): [number, Point];
+        distanceTo(shape: AnyShape): [number, Segment];
         merge(box: Box): Box;
         less_than(box: Box): boolean;
         equal_to(box: Box): boolean;
@@ -632,7 +632,7 @@ declare namespace Flatten {
 
     function point(x?: number, y?: number): Point;
     function point(arr?: [number, number]): Point;
-    function box(xmin: number, ymin: number, xmax: number, ymax: number) : Box
+    function box(xmin?: number, ymin?: number, xmax?: number, ymax?: number): Box;
     function circle(pc: Point, r: number) : Circle;
     function line(pt?: Point, norm?: Vector) : Line;
     function line(norm?: Vector, pt?: Point) : Line;
@@ -691,4 +691,3 @@ declare namespace Flatten.Relations {
 
 export = Flatten;
 export as namespace Flatten;
-

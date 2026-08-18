@@ -552,7 +552,7 @@ export class Polygon {
 
     /**
      * Return distance and shortest segment between polygon and other shape as array [distance, shortest_segment]
-     * @param {Shape} shape Shape of one of the types Point, Circle, Line, Segment, Arc or Polygon
+     * @param {Shape} shape Shape of one of the types Point, Circle, Line, Segment, Arc, Box or Polygon
      * @returns {Number | Segment}
      */
     distanceTo(shape) {
@@ -571,6 +571,10 @@ export class Polygon {
             let [dist, shortest_segment] = Flatten.Distance.shape2polygon(shape, this);
             shortest_segment = shortest_segment.reverse();
             return [dist, shortest_segment];
+        }
+
+        if (shape instanceof Flatten.Box) {
+            return this.distanceTo(new Flatten.Polygon(shape));
         }
 
         /* this method is bit faster */
@@ -732,4 +736,3 @@ Flatten.Polygon = Polygon;
  */
 export const polygon = (...args) => new Flatten.Polygon(...args);
 Flatten.polygon = polygon;
-

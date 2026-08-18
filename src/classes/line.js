@@ -247,7 +247,7 @@ export class Line extends Shape {
 
     /**
      * Calculate distance and shortest segment from line to shape and returns array [distance, shortest_segment]
-     * @param {Shape} shape Shape of the one of the types Point, Circle, Segment, Arc, Polygon
+     * @param {Shape} shape Shape of the one of the types Point, Circle, Segment, Arc, Box, Polygon
      * @returns {[number, Segment]}
      */
     distanceTo(shape) {
@@ -271,6 +271,11 @@ export class Line extends Shape {
         if (shape instanceof Flatten.Arc) {
             let [distance, shortest_segment] = Flatten.Distance.arc2line(shape, this);
             return [distance, shortest_segment.reverse()];
+        }
+
+        if (shape instanceof Flatten.Box) {
+            let [distance, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
+            return [distance, shortest_segment];
         }
 
         if (shape instanceof Flatten.Polygon) {

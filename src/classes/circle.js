@@ -182,7 +182,7 @@ export class Circle extends Shape {
 
     /**
      * Calculate distance and shortest segment from circle to shape and return array [distance, shortest segment]
-     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
      * @returns {number} distance from circle to shape
      * @returns {Segment} shortest segment between circle and shape (started at circle, ended at shape)
 
@@ -213,6 +213,11 @@ export class Circle extends Shape {
         if (shape instanceof Flatten.Arc) {
             let [distance, shortest_segment] = Flatten.Distance.arc2circle(shape, this);
             shortest_segment = shortest_segment.reverse();
+            return [distance, shortest_segment];
+        }
+
+        if (shape instanceof Flatten.Box) {
+            let [distance, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
             return [distance, shortest_segment];
         }
 
@@ -255,4 +260,3 @@ Flatten.Circle = Circle;
  */
 export const circle = (...args) => new Flatten.Circle(...args);
 Flatten.circle = circle;
-

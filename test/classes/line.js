@@ -197,6 +197,13 @@ describe('#Flatten.Line', function() {
         let line2 = new Flatten.Line(new Flatten.Point(4.001, 0), new Flatten.Point(0, 4));
         expect(line1.parallelTo(line2)).to.be.false;
     });
+    it('Can measure distance from line to box', function () {
+        const l = new Line(new Point(2, 0), new Vector(1, 0));
+        const [dist, shortest_segment] = l.distanceTo(new Box(0, 0, 1, 1));
+
+        expect(dist).to.equal(1);
+        expect(shortest_segment).to.deep.equal({ps: {x: 2, y: 0}, pe: {x: 1, y: 0}});
+    });
     it('Method svg() creates same svg string as segment with same points', function() {
         let l = line(point(4, 0), point(0, 4));
         let box = new Box(0,0,4,4);
@@ -226,4 +233,3 @@ describe('#Flatten.Line', function() {
         expect(l_parsed).to.deep.equal(l);
     });
 });
-
