@@ -147,7 +147,7 @@ export class Point extends Shape {
 
     /**
      * Calculate distance and shortest segment from point to shape and return as array [distance, shortest segment]
-     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+     * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
      * @returns {number} distance from point to shape
      * @returns {Segment} shortest segment between point and shape (started at point, ended at shape)
      */
@@ -172,6 +172,10 @@ export class Point extends Shape {
 
         if (shape instanceof Flatten.Arc) {
             return Flatten.Distance.point2arc(this, shape);
+        }
+
+        if (shape instanceof Flatten.Box) {
+            return Flatten.Distance.point2polygon(this, new Flatten.Polygon(shape));
         }
 
         if (shape instanceof Flatten.Polygon) {

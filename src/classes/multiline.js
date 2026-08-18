@@ -206,7 +206,7 @@ export class Multiline extends LinkedList {
      * @returns {[number,Flatten.Segment]}
      */
     distanceTo(shape) {
-        if (shape instanceof Point) {
+        if (shape instanceof Flatten.Point) {
             const [dist, shortest_segment] = Flatten.Distance.shape2multiline(shape, this);
             return [dist, shortest_segment.reverse()];
         }
@@ -228,6 +228,11 @@ export class Multiline extends LinkedList {
 
         if (shape instanceof Flatten.Arc) {
             const [dist, shortest_segment] = Flatten.Distance.shape2multiline(shape, this);
+            return [dist, shortest_segment.reverse()];
+        }
+
+        if (shape instanceof Flatten.Box) {
+            const [dist, shortest_segment] = Flatten.Distance.shape2multiline(new Flatten.Polygon(shape), this);
             return [dist, shortest_segment.reverse()];
         }
 

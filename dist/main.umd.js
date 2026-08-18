@@ -1287,7 +1287,7 @@
          * @returns {[number,Flatten.Segment]}
          */
         distanceTo(shape) {
-            if (shape instanceof Point) {
+            if (shape instanceof Flatten.Point) {
                 const [dist, shortest_segment] = Flatten.Distance.shape2multiline(shape, this);
                 return [dist, shortest_segment.reverse()];
             }
@@ -1309,6 +1309,11 @@
 
             if (shape instanceof Flatten.Arc) {
                 const [dist, shortest_segment] = Flatten.Distance.shape2multiline(shape, this);
+                return [dist, shortest_segment.reverse()];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                const [dist, shortest_segment] = Flatten.Distance.shape2multiline(new Flatten.Polygon(shape), this);
                 return [dist, shortest_segment.reverse()];
             }
 
@@ -4395,7 +4400,7 @@
      * Class representing a point
      * @type {Point}
      */
-    let Point$3 = class Point extends Shape {
+    let Point$2 = class Point extends Shape {
         /**
          * Point may be constructed by two numbers, or by array of two numbers
          * @param {number} x - x-coordinate (float number)
@@ -4529,7 +4534,7 @@
 
         /**
          * Calculate distance and shortest segment from point to shape and return as array [distance, shortest segment]
-         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
          * @returns {number} distance from point to shape
          * @returns {Segment} shortest segment between point and shape (started at point, ended at shape)
          */
@@ -4554,6 +4559,10 @@
 
             if (shape instanceof Flatten.Arc) {
                 return Flatten.Distance.point2arc(this, shape);
+            }
+
+            if (shape instanceof Flatten.Box) {
+                return Flatten.Distance.point2polygon(this, new Flatten.Polygon(shape));
             }
 
             if (shape instanceof Flatten.Polygon) {
@@ -4610,7 +4619,7 @@
         }
     };
 
-    Flatten.Point = Point$3;
+    Flatten.Point = Point$2;
     /**
      * Function to create point equivalent to "new" constructor
      * @param args
@@ -5083,7 +5092,7 @@
 
         /**
          * Calculate distance and shortest segment from segment to shape and return as array [distance, shortest segment]
-         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
          * @returns {[number, Segment]} shortest segment between segment and shape (started at segment, ended at shape)
          */
         distanceTo(shape) {
@@ -5110,6 +5119,11 @@
 
             if (shape instanceof Flatten.Arc) {
                 let [dist, shortest_segment] = Flatten.Distance.segment2arc(this, shape);
+                return [dist, shortest_segment];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                let [dist, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
                 return [dist, shortest_segment];
             }
 
@@ -5502,7 +5516,7 @@
 
         /**
          * Calculate distance and shortest segment from line to shape and returns array [distance, shortest_segment]
-         * @param {Shape} shape Shape of the one of the types Point, Circle, Segment, Arc, Polygon
+         * @param {Shape} shape Shape of the one of the types Point, Circle, Segment, Arc, Box, Polygon
          * @returns {[number, Segment]}
          */
         distanceTo(shape) {
@@ -5526,6 +5540,11 @@
             if (shape instanceof Flatten.Arc) {
                 let [distance, shortest_segment] = Flatten.Distance.arc2line(shape, this);
                 return [distance, shortest_segment.reverse()];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                let [distance, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
+                return [distance, shortest_segment];
             }
 
             if (shape instanceof Flatten.Polygon) {
@@ -5808,7 +5827,7 @@
 
         /**
          * Calculate distance and shortest segment from circle to shape and return array [distance, shortest segment]
-         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
          * @returns {number} distance from circle to shape
          * @returns {Segment} shortest segment between circle and shape (started at circle, ended at shape)
 
@@ -5839,6 +5858,11 @@
             if (shape instanceof Flatten.Arc) {
                 let [distance, shortest_segment] = Flatten.Distance.arc2circle(shape, this);
                 shortest_segment = shortest_segment.reverse();
+                return [distance, shortest_segment];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                let [distance, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
                 return [distance, shortest_segment];
             }
 
@@ -6154,7 +6178,7 @@
 
         /**
          * Calculate distance and shortest segment from arc to shape and return array [distance, shortest segment]
-         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
          * @returns {number} distance from arc to shape
          * @returns {Segment} shortest segment between arc and shape (started at arc, ended at shape)
 
@@ -6184,6 +6208,11 @@
 
             if (shape instanceof Flatten.Arc) {
                 let [dist, shortest_segment] = Flatten.Distance.arc2arc(this, shape);
+                return [dist, shortest_segment];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                let [dist, shortest_segment] = Flatten.Distance.shape2polygon(this, new Flatten.Polygon(shape));
                 return [dist, shortest_segment];
             }
 
@@ -6697,7 +6726,7 @@
 
         /**
          * Calculate distance and shortest segment from box to shape and return as array [distance, shortest segment]
-         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Polygon or Planar Set
+         * @param {Shape} shape Shape of the one of supported types Point, Line, Circle, Segment, Arc, Box, Polygon or Planar Set
          * @returns {number} distance from box to shape
          * @returns {Segment} shortest segment between box and shape (started at box, ended at shape)
          */
@@ -8314,7 +8343,7 @@
 
         /**
          * Return distance and shortest segment between polygon and other shape as array [distance, shortest_segment]
-         * @param {Shape} shape Shape of one of the types Point, Circle, Line, Segment, Arc or Polygon
+         * @param {Shape} shape Shape of one of the types Point, Circle, Line, Segment, Arc, Box or Polygon
          * @returns {Number | Segment}
          */
         distanceTo(shape) {
@@ -8333,6 +8362,10 @@
                 let [dist, shortest_segment] = Flatten.Distance.shape2polygon(shape, this);
                 shortest_segment = shortest_segment.reverse();
                 return [dist, shortest_segment];
+            }
+
+            if (shape instanceof Flatten.Box) {
+                return this.distanceTo(new Flatten.Polygon(shape));
             }
 
             /* this method is bit faster */
@@ -8495,7 +8528,7 @@
     const polygon = (...args) => new Flatten.Polygon(...args);
     Flatten.polygon = polygon;
 
-    const {Circle, Line, Point: Point$2, Vector, Utils} = Flatten;
+    const {Circle, Line, Point: Point$1, Vector, Utils} = Flatten;
     /**
      * Class Inversion represent operator of inversion in circle
      * Inversion is a transformation of the Euclidean plane that maps generalized circles
@@ -8523,7 +8556,7 @@
             const k2 = inversion_circle.r * inversion_circle.r;
             const len2 = v.dot(v);
             const reflected_point = Utils.EQ_0(len2) ?
-                new Point$2(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY) :
+                new Point$1(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY) :
                 inversion_circle.pc.translate(v.multiply(k2 / len2));
             return reflected_point;
         }
@@ -8561,7 +8594,7 @@
         }
 
         inverse(shape) {
-            if (shape instanceof Point$2) {
+            if (shape instanceof Point$1) {
                 return Inversion.inversePoint(this.circle, shape);
             }
             else if (shape instanceof Circle) {
@@ -9236,7 +9269,7 @@
 
     Flatten.Distance = Distance;
 
-    const {Multiline, Point: Point$1, Segment, Polygon} = Flatten;
+    const {Multiline, Point, Segment, Polygon} = Flatten;
 
     // POINT (30 10)
     // MULTIPOINT (10 40, 40 30, 20 20, 30 10)
@@ -9249,7 +9282,7 @@
     // GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))
 
     function parseSinglePoint(pointStr) {
-        return new Point$1(pointStr.split(' ').map(Number))
+        return new Point(pointStr.split(' ').map(Number))
     }
 
     function parseMultiPoint(multipointStr) {
@@ -9276,7 +9309,7 @@
         let orientation;
         facesStr.forEach((facesStr, idx) => {
             let points = facesStr.split(', ').map(coordStr => {
-                return new Point$1(coordStr.split(' ').map(Number))
+                return new Point(coordStr.split(' ').map(Number))
             });
             const face = polygon.addFace(points);
             if (idx === 0) {
@@ -9435,7 +9468,7 @@
     exports.OVERLAP_OPPOSITE = OVERLAP_OPPOSITE$1;
     exports.OVERLAP_SAME = OVERLAP_SAME$1;
     exports.PlanarSet = PlanarSet;
-    exports.Point = Point$3;
+    exports.Point = Point$2;
     exports.Polygon = Polygon$1;
     exports.Ray = Ray;
     exports.Relations = Relations;

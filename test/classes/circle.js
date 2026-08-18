@@ -215,7 +215,14 @@ describe('#Flatten.Circle', function() {
             expect(dist).to.equal(25);
             expect(shortest_segment.ps).to.deep.equal({"x": 300, "y": 50});
             expect(shortest_segment.pe).to.deep.equal({"x": 300, "y": 75});
-        })
+        });
+        it('Can measure distance between circle and box', function () {
+            const c = circle(point(3, 0.5), 1);
+            const [dist, shortest_segment] = c.distanceTo(new Box(0, 0, 1, 1));
+
+            expect(dist).to.equal(1);
+            expect(shortest_segment).to.deep.equal({ps: {x: 2, y: 0.5}, pe: {x: 1, y: 0.5}});
+        });
     });
     it('Method svg() without parameters creates svg string with default attributes', function() {
         let c = circle(point(300,25), 25);
@@ -230,4 +237,3 @@ describe('#Flatten.Circle', function() {
         expect(svg.search("class")).to.not.equal(-1);
     })
 });
-

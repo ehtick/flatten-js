@@ -431,5 +431,12 @@ describe('#Flatten.Arc', function() {
             const distanceInfo = arc.distanceTo(point);
             expect(distanceInfo[0]).to.be.closeTo(1 - Math.sqrt(0.5 * 0.5 + 0.5 * 0.5), Flatten.DP_TOL);
         });
+        it('distance to box', function () {
+            const arc = new Arc(new Point(3, 0.5), 1, Math.PI / 2, Math.PI * 3 / 2, true);
+            const [dist, shortest_segment] = arc.distanceTo(new Box(0, 0, 1, 1));
+
+            expect(dist).to.equal(1);
+            expect(shortest_segment).to.deep.equal({ps: {x: 2, y: 0.5}, pe: {x: 1, y: 0.5}});
+        });
     });
 });

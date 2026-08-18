@@ -184,7 +184,7 @@ declare namespace Flatten {
         not_intersect(box: Box): boolean;
         intersect(box: Box): boolean;
         contains(shape: AnyShape): boolean;
-        distanceTo(shape: AnyShape): [number, Point];
+        distanceTo(shape: AnyShape): [number, Segment];
         merge(box: Box): Box;
         less_than(box: Box): boolean;
         equal_to(box: Box): boolean;
@@ -690,4 +690,3 @@ declare namespace Flatten.Relations {
 
 export = Flatten;
 export as namespace Flatten;
-
